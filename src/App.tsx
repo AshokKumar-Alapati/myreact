@@ -1,6 +1,4 @@
 
-import React from 'react'
-
 function App() {
   return (
     <header className="bg-yellow-100 max-w-[85%] mx-auto p-4 text-center">
