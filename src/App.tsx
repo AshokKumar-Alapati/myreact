@@ -4,7 +4,7 @@ import fileImg from './assets/file.jpg'; // Image in assets folder one level up
 function App() {
   const [showLocation, setShowLocation] = useState(false);
 
-  const toggleLocation = (show) => {
+  const toggleLocation = (show:boolean) => {
     setShowLocation(show);
   };
 
@@ -87,7 +87,7 @@ function App() {
                 height="100%"
                 frameBorder="0"
                 style={{ border: 0 }}
-                allowFullScreen=""
+                allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
