@@ -31,7 +31,7 @@ function App() {
         
         {/* Main Section with Background Image and Centered Content */}
         <main
-          className="flex-1 ml-6 rounded-md shadow-md text-gray-800 bg-cover bg-center flex items-center justify-center"
+          className="flex-1 ml-6 rounded-md shadow-md text-gray-800 bg-cover bg-center flex items-center justify-center min-h-[300px] sm:min-h-[400px]"
           style={{
             backgroundImage: `url(${fileImg})`,
             backgroundRepeat: 'no-repeat',
