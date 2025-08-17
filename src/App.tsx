@@ -1,76 +1,119 @@
 import { useState } from 'react';
-import fileImg from './assets/file.jpg'; // Image in assets folder one level up
+import fileImg from './assets/file.jpg'; // Background image
+import headingImage from './assets/heading_image.jpg'; // Heading section image
+import headerBackground from './assets/header_background.jpg'; // Header background image
+import { useTranslation } from 'react-i18next';
+import HeaderLanguage from './header/HeaderLanguage';
+import i18n from './i18n';
 
 function App() {
   const [showLocation, setShowLocation] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'te' | 'hi'>('en');
+  const { t } = useTranslation();
 
-  const toggleLocation = (show:boolean) => {
+  const toggleLocation = (show: boolean) => {
     setShowLocation(show);
+  };
+
+  const changeLanguage = (lng: string) => {
+    setSelectedLanguage(lng as 'en' | 'te' | 'hi');
+    i18n.changeLanguage(lng);
   };
 
   return (
     <div className="min-h-screen max-w-[85%] mx-auto flex flex-col">
+      {/* Header: image left, heading text next to it with max width, language absolute top-right */}
+      <header
+        className="relative px-2 sm:px-2 py-2 mt-2 shadow-sm"
+        style={{
+          backgroundImage: `url(${headerBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="max-w-5xl mx-auto flex items-center space-x-2 pl-0">
+          {/* Heading Image with reduced left margin */}
+          <img
+            src={headingImage}
+            alt="Heading"
+            className="w-16 h-16 rounded-lg shadow-md object-cover flex-shrink-0 ml-0 sm:-ml-4"
+          />
 
-      {/* Header with margin-top */}
-      <header className="bg-yellow-100 p-4 text-center mt-6">
-        <div className="flex flex-col sm:flex-row items-center justify-center mx-auto">
-          <h1 className="font-bold text-red-600 text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-            Ankamma Talli Devastanam
-          </h1>
-          <span className="text-sm font-normal text-gray-700 mt-2 sm:mt-0 sm:ml-4">
-            Rudrakota
-          </span>
+          {/* Heading text container with padding-right on mobile only */}
+          <div className="text-left max-w-xs flex-shrink pr-12 sm:pr-0">
+            <h1 className="font-bold text-red-600 text-lg sm:text-xl md:text-2xl leading-snug m-0 p-0 break-words">
+              {t('welcome_message')}
+            </h1>
+            <span className="text-gray-700 text-xs sm:text-sm font-medium block">
+              {t('welcome_subtitle')}
+            </span>
+          </div>
+        </div>
+
+        {/* Language selector absolutely positioned */}
+        <div className="absolute top-2 right-4">
+          <HeaderLanguage
+            setLanguage={changeLanguage}
+            selectedLanguage={selectedLanguage}
+          />
         </div>
       </header>
 
-      {/* Mobile Navigation below header */}
-      <nav className="bg-gray-100 p-4 shadow-md rounded-md mt-4 sm:hidden flex justify-around text-gray-700 font-semibold">
-        <button
-          onClick={() => toggleLocation(false)}
-          className="hover:text-red-600 focus:outline-none"
-        >
+      {/* Mobile Navigation */}
+      <nav className="bg-gray-100 p-3 shadow-md rounded-md mt-3 sm:hidden flex justify-around text-gray-700 font-semibold text-sm">
+        <button onClick={() => toggleLocation(false)} className="hover:text-red-600 focus:outline-none">
           Home
         </button>
-        <a href="#services" className="hover:text-red-600">Services</a>
-        <a href="#about" className="hover:text-red-600">About</a>
-        <a href="#contact" className="hover:text-red-600">Contact</a>
-        <button
-          onClick={() => toggleLocation(true)}
-          className="hover:text-red-600 focus:outline-none"
-        >
+        <a href="#services" className="hover:text-red-600">
+          Services
+        </a>
+        <a href="#about" className="hover:text-red-600">
+          About
+        </a>
+        <a href="#contact" className="hover:text-red-600">
+          Contact
+        </a>
+        <button onClick={() => toggleLocation(true)} className="hover:text-red-600 focus:outline-none">
           Location
         </button>
       </nav>
 
       {/* Desktop Sidebar Nav */}
-      <div className="flex flex-1 w-full mt-6">
-        <nav className="hidden sm:block w-48 bg-gray-100 p-4 rounded-md shadow-md">
-          <ul className="space-y-4 text-gray-700 font-semibold">
+      <div className="flex flex-1 w-full mt-4">
+        <nav className="hidden sm:block w-40 bg-gray-100 p-4 rounded-md shadow-md text-sm" role="navigation" aria-label="Primary Navigation">
+          <ul className="space-y-3 text-gray-700 font-semibold">
             <li>
-              <button
-                onClick={() => toggleLocation(false)}
-                className="hover:text-red-600 focus:outline-none"
-              >
+              <button onClick={() => toggleLocation(false)} className="hover:text-red-600 focus:outline-none" aria-label="Home">
                 Home
               </button>
             </li>
-            <li><a href="#services" className="hover:text-red-600">Services</a></li>
-            <li><a href="#about" className="hover:text-red-600">About</a></li>
-            <li><a href="#contact" className="hover:text-red-600">Contact</a></li>
             <li>
-              <button
-                onClick={() => toggleLocation(true)}
-                className="hover:text-red-600 focus:outline-none"
-              >
+              <a href="#services" className="hover:text-red-600" aria-label="Services">
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="hover:text-red-600" aria-label="About">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="hover:text-red-600" aria-label="Contact">
+                Contact
+              </a>
+            </li>
+            <li>
+              <button onClick={() => toggleLocation(true)} className="hover:text-red-600 focus:outline-none" aria-label="Location">
                 Location
               </button>
             </li>
           </ul>
         </nav>
 
-        {/* Main Section or Location Map */}
+        {/* Main Section */}
         <main
-          className="flex-1 ml-6 rounded-md shadow-md flex items-center justify-center min-h-[200px] sm:min-h-[400px] text-gray-800"
+          className="flex-1 ml-4 rounded-md shadow-md flex items-center justify-center min-h-[200px] sm:min-h-[400px] text-gray-800"
           style={{
             backgroundImage: showLocation ? 'none' : `url(${fileImg})`,
             backgroundRepeat: 'no-repeat',
@@ -93,22 +136,21 @@ function App() {
               ></iframe>
             </div>
           ) : (
-            <div className="hidden sm:block bg-white bg-opacity-40 sm:bg-opacity-70 p-4 sm:p-6 rounded-lg text-center max-w-lg">
-              <h2 className="text-base sm:text-lg md:text-2xl font-bold mb-3 sm:mb-4">
+            <div className="bg-white bg-opacity-50 sm:bg-opacity-70 p-4 sm:p-6 rounded-lg text-center max-w-lg mx-auto">
+              <h2 className="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">
                 Welcome to Ankamma Talli Devastanam
               </h2>
               <p className="text-xs sm:text-sm md:text-base">
-                This is the main content area where you can add paragraphs, images, or any other content.
-                The site is styled using Tailwind CSS and laid out with a responsive design in mind.
+                This is the main content area where you can add paragraphs, images, or any other content. The site is styled using Tailwind CSS and laid out with a responsive design in mind.
               </p>
             </div>
           )}
         </main>
       </div>
 
-      {/* Footer with margin-bottom */}
-      <footer className="bg-yellow-100 text-center p-4 mt-6 mb-6 border-t border-gray-300">
-        <p className="text-gray-600 text-sm">All rights reserved.</p>
+      {/* Footer */}
+      <footer className="bg-yellow-100 text-center p-3 mt-4 mb-4 border-t border-gray-300 text-xs sm:text-sm">
+        <p className="text-gray-600">All rights reserved.</p>
       </footer>
     </div>
   );
